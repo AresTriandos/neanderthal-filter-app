@@ -12,24 +12,9 @@
     },
     "production": {
       "distribution": "store"
-    },
-    "ios-testflight": {
-      "ios": {
-        "buildNumber": "1"
-      },
-      "distribution": "internal"
     }
   },
   "submit": {
-    "production": {
-      "ios": {
-        "autoIncrement": true
-      }
-    },
-    "testflight": {
-      "ios": {
-        "autoIncrement": true
-      }
-    }
+    "production": {}
   }
 }
