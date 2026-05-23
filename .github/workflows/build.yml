@@ -36,15 +36,21 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           npm install -g eas-cli
-          eas build --platform ios --build-profile=preview --non-interactive
+          eas build --platform ios --build-profile=production --wait
         env:
-          EAS_TOKEN: ${{ secrets.EAS_TOKEN }}
+          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
-      - name: Build for Android (EAS)
+      - name: Submit to TestFlight (iOS)
         if: github.ref == 'refs/heads/main'
-        run: eas build --platform android --build-profile=preview --non-interactive
+        run: eas submit --platform ios --latest --wait
         env:
-          EAS_TOKEN: ${{ secrets.EAS_TOKEN }}
+          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
