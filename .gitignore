@@ -1,0 +1,33 @@
+# Expo
+.expo/
+.expo-shared/
+dist/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+
+# Build artifacts
+*.ipa
+*.apk
+build/
+
+# Cache
+.eslintcache
+.jest_cache

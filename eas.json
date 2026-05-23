@@ -1,0 +1,35 @@
+{
+  "cli": {
+    "version": ">= 5.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "distribution": "store"
+    },
+    "ios-testflight": {
+      "ios": {
+        "buildNumber": "1"
+      },
+      "distribution": "internal"
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "autoIncrement": true
+      }
+    },
+    "testflight": {
+      "ios": {
+        "autoIncrement": true
+      }
+    }
+  }
+}
