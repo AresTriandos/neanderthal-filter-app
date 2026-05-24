@@ -33,4 +33,5 @@ jobs:
       - name: Submit to TestFlight
         env:
           EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
-        run: npx eas-cli submit --platform ios --latest --wait
+          EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+        run: npx eas-cli submit --platform ios --profile production --latest --wait
