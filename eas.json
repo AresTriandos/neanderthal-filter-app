@@ -19,7 +19,9 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "annapolischiro@hotmail.com"
+        "appleId": "annapolischiro@hotmail.com",
+        "ascAppId": "6772767159",
+        "appleTeamId": "L82V95LG93"
       }
     }
   }
