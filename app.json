@@ -10,7 +10,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.neanderthalfilter.app"
+      "bundleIdentifier": "com.neanderthalfilter.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.neanderthalfilter.app",
