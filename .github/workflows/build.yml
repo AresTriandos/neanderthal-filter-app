@@ -11,8 +11,6 @@ jobs:
     name: Build & Deploy to TestFlight
     runs-on: macos-latest
     timeout-minutes: 120
-    env:
-      EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -21,14 +19,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build iOS app
+        env:
+          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
         run: npx eas-cli build --platform ios --profile production --wait
 
       - name: Submit to TestFlight
+        env:
+          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
         run: npx eas-cli submit --platform ios --latest --wait
