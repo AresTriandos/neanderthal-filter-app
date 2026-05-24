@@ -21,24 +21,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
+        run: npm ci
 
       - name: Build iOS app
-        run: eas build --platform ios --profile production --wait
+        run: npx eas-cli build --platform ios --profile production --wait
 
       - name: Submit to TestFlight
-        run: eas submit --platform ios --latest --wait
-
-      - name: Notify on success
-        if: success()
-        run: echo "✅ Build and deployment successful!"
-
-      - name: Notify on failure
-        if: failure()
-        run: echo "❌ Build or deployment failed"
+        run: npx eas-cli submit --platform ios --latest --wait

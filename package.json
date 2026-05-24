@@ -7,25 +7,20 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
     "build": "eas build",
     "build:ios": "eas build --platform ios",
     "build:android": "eas build --platform android"
   },
   "dependencies": {
-    "expo": "^56.0.0",
-    "expo-camera": "^15.0.0",
-    "expo-media-library": "^16.0.0",
-    "expo-sharing": "^14.0.0",
-    "expo-constants": "^16.0.0",
-    "react": "^18.3.1",
-    "react-native": "^0.75.0",
-    "@react-native-camera-roll/camera-roll": "^7.8.0",
-    "react-native-gesture-handler": "^2.14.0",
-    "react-native-reanimated": "^3.6.0"
+    "expo": "~56.0.4",
+    "expo-status-bar": "~56.0.4",
+    "react": "19.2.3",
+    "react-native": "0.85.3"
   },
   "devDependencies": {
-    "@types/react": "^18.3.0",
-    "typescript": "^5.3.0"
+    "@types/react": "~19.2.2",
+    "typescript": "~6.0.3"
   },
   "private": true
 }
