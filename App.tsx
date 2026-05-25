@@ -14,68 +14,58 @@ import {
 
 type ViewMode = 'home' | 'result' | 'history';
 
-type AnalysisResult = {
+type MorphResult = {
   id: string;
   title: string;
   summary: string;
   traits: string[];
-  caption: string;
   imageUri: string;
   createdAt: string;
 };
 
 const palette = {
-  bg: '#0D0F12',
+  bg: '#0C0E11',
   panel: '#171B21',
   panelSoft: '#20252D',
-  line: '#2B313B',
+  line: '#2D343F',
   text: '#F5F7FA',
-  muted: '#A7B0BE',
-  accent: '#D49A52',
+  muted: '#ABB4C2',
+  accent: '#D39A54',
   accentSoft: '#F2D2A6',
+  earth: '#6E4D33',
+  earthSoft: '#9A6C44',
 };
 
-const archetypes = [
+const morphProfiles = [
   {
-    title: 'The Cave Guardian',
+    title: 'Ice Age Brow',
     summary:
-      'Your ancient look comes through with a heavy brow, grounded stare, and the kind of face that looks built for survival in hard weather.',
-    traits: ['Strong brow ridge', 'Broader jawline', 'Deep-set eyes'],
-    caption: 'Built for cold mornings, long hunts, and absolutely no small talk.',
+      'The filter pushed your look toward a heavier brow ridge, rougher contrast, and a more survival-built face shape.',
+    traits: ['Heavy brow effect', 'Stone-age contrast', 'Earth-tone grade'],
   },
   {
-    title: 'The Fire Keeper',
+    title: 'Cave Chief',
     summary:
-      'Your features translate into something sturdy and alert, like the person everyone trusted to keep the fire alive after dark.',
-    traits: ['Wide cheek structure', 'Powerful nose bridge', 'Steady expression'],
-    caption: 'Ancient, calm, and probably the one who knew where the good shelter was.',
+      'This version leans stronger and more commanding, with a denser forehead shadow and a tougher overall face profile.',
+    traits: ['Forehead shadowing', 'Jaw emphasis', 'Ancient portrait tone'],
   },
   {
-    title: 'The Valley Hunter',
+    title: 'Valley Hunter',
     summary:
-      'This version of you looks sharp, resilient, and slightly intimidating in the best way. Less polished, more born-ready.',
-    traits: ['Heavier forehead', 'Compact facial structure', 'Weathered intensity'],
-    caption: 'You look like you could spot danger from a hilltop and make it home by nightfall.',
+      'The result gives your face a rougher, colder look, like someone built for wind, rock, and very little comfort.',
+    traits: ['Sharper depth', 'Cold-weather grade', 'Survivalist look'],
   },
   {
-    title: 'The Stone Age Chief',
+    title: 'Fire Keeper',
     summary:
-      'The analysis reads cinematic and commanding. Your Neanderthal version looks like someone people naturally followed.',
-    traits: ['Leader energy', 'Dense facial framing', 'Dominant silhouette'],
-    caption: 'If there was a mammoth plan, ancient-you definitely approved it.',
-  },
-  {
-    title: 'The Ice Trail Survivor',
-    summary:
-      'You come across as durable and watchful, with the kind of face that looks shaped by rough landscapes and long winters.',
-    traits: ['Survivalist profile', 'Broad facial base', 'Focused gaze'],
-    caption: 'Not delicate. Not lost. Definitely making it through the Ice Age.',
+      'This version keeps your face recognizable but adds warmth, age, and a more primitive bone structure feel.',
+    traits: ['Warm earth tones', 'Primitive face shape', 'Cinematic grit'],
   },
 ];
 
 export default function App() {
   const [mode, setMode] = useState<ViewMode>('home');
-  const [history, setHistory] = useState<AnalysisResult[]>([]);
+  const [history, setHistory] = useState<MorphResult[]>([]);
   const [cameraDenied, setCameraDenied] = useState(false);
 
   const latest = useMemo(() => history[0] ?? null, [history]);
@@ -92,44 +82,55 @@ export default function App() {
       Alert.alert(
         source === 'camera' ? 'Camera access needed' : 'Photo access needed',
         source === 'camera'
-          ? 'Take a selfie so the app can analyze your Neanderthal look.'
-          : 'Choose a selfie from your library so the app can analyze your Neanderthal look.'
+          ? 'Take a selfie so Neanderthal Filter can build your prehistoric version.'
+          : 'Choose a selfie from your library so Neanderthal Filter can build your prehistoric version.'
       );
       return;
     }
 
     const result =
       source === 'camera'
-        ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], cameraType: ImagePicker.CameraType.front, quality: 0.8 })
-        : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsEditing: true, aspect: [3, 4], quality: 0.8 });
+        ? await ImagePicker.launchCameraAsync({
+            mediaTypes: ['images'],
+            cameraType: ImagePicker.CameraType.front,
+            quality: 0.8,
+          })
+        : await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [3, 4],
+            quality: 0.8,
+          });
 
     if (result.canceled || !result.assets?.[0]) {
       return;
     }
 
-    const template = archetypes[Math.floor(Math.random() * archetypes.length)];
-    const analysis: AnalysisResult = {
+    const profile = morphProfiles[Math.floor(Math.random() * morphProfiles.length)];
+    const morph: MorphResult = {
       id: `${Date.now()}`,
       imageUri: result.assets[0].uri,
       createdAt: new Date().toLocaleString(),
-      ...template,
+      ...profile,
     };
 
-    setHistory((current) => [analysis, ...current].slice(0, 12));
+    setHistory((current) => [morph, ...current].slice(0, 12));
     setMode('result');
   };
 
   const renderHome = () => (
     <View style={styles.content}>
       <Text style={styles.eyebrow}>Neanderthal Filter</Text>
-      <Text style={styles.title}>See your ancient face.</Text>
+      <Text style={styles.title}>Morph your face into the stone age.</Text>
       <Text style={styles.body}>
-        Take a selfie, hit analyze, and see a realistic cinematic version of what you might have looked like as a Neanderthal.
+        This free phase-one version uses a smart cinematic filter approach: heavier brow, rougher tones, tougher shadows, and a prehistoric portrait feel.
       </Text>
 
-      <View style={styles.heroCard}>
-        <Text style={styles.heroLabel}>How it works</Text>
-        <Text style={styles.heroText}>1. Take a selfie. 2. Analyze your face. 3. Get your ancient-human result.</Text>
+      <View style={styles.infoCard}>
+        <Text style={styles.infoLabel}>Phase 1</Text>
+        <Text style={styles.infoText}>
+          Take a selfie, then the app creates a local Neanderthal-style version using overlays, grading, and face-shape styling — no paid AI required.
+        </Text>
       </View>
 
       <Pressable style={styles.primaryButton} onPress={() => pickImage('camera')}>
@@ -143,40 +144,64 @@ export default function App() {
       {cameraDenied ? (
         <View style={styles.warningCard}>
           <Text style={styles.warningTitle}>Camera permission is off</Text>
-          <Text style={styles.warningText}>Allow camera access when prompted so you can take a selfie for analysis.</Text>
+          <Text style={styles.warningText}>Allow camera access when prompted so you can take a selfie for the morph.</Text>
         </View>
       ) : null}
 
       {latest ? (
-        <View style={styles.previewCard}>
-          <Text style={styles.heroLabel}>Latest analysis</Text>
-          <Text style={styles.previewTitle}>{latest.title}</Text>
-          <Text style={styles.previewText}>{latest.caption}</Text>
+        <View style={styles.latestCard}>
+          <Text style={styles.infoLabel}>Latest morph</Text>
+          <Text style={styles.latestTitle}>{latest.title}</Text>
+          <Text style={styles.latestText}>{latest.summary}</Text>
           <Pressable style={styles.linkButton} onPress={() => setMode('result')}>
-            <Text style={styles.linkButtonText}>Open latest result</Text>
+            <Text style={styles.linkButtonText}>View latest result</Text>
           </Pressable>
         </View>
       ) : null}
     </View>
   );
 
+  const renderMorphImage = (uri: string) => (
+    <View style={styles.morphFrame}>
+      <Image source={{ uri }} style={styles.morphImage} />
+      <View style={styles.colorGradeOverlay} />
+      <View style={styles.browRidgeBand} />
+      <View style={styles.cheekShadowLeft} />
+      <View style={styles.cheekShadowRight} />
+      <View style={styles.noseBridge} />
+      <View style={styles.jawShadow} />
+      <View style={styles.vignetteTop} />
+      <View style={styles.vignetteBottom} />
+      <View style={styles.grainTint} />
+    </View>
+  );
+
   const renderResult = () => (
     <View style={styles.content}>
       <View style={styles.headerRow}>
-        <Text style={styles.title}>Analyze Me</Text>
+        <Text style={styles.title}>Before / After</Text>
         <Pressable style={styles.linkButton} onPress={() => pickImage('camera')}>
           <Text style={styles.linkButtonText}>New selfie</Text>
         </Pressable>
       </View>
 
       {!latest ? (
-        <View style={styles.heroCard}>
-          <Text style={styles.previewTitle}>No analysis yet</Text>
-          <Text style={styles.previewText}>Take a selfie first and your Neanderthal result will show up here.</Text>
+        <View style={styles.infoCard}>
+          <Text style={styles.latestTitle}>No morph yet</Text>
+          <Text style={styles.latestText}>Take a selfie first and your Neanderthal version will show up here.</Text>
         </View>
       ) : (
         <View style={styles.resultCard}>
-          <Image source={{ uri: latest.imageUri }} style={styles.resultImage} />
+          <View style={styles.compareSection}>
+            <Text style={styles.compareLabel}>Original</Text>
+            <Image source={{ uri: latest.imageUri }} style={styles.compareImage} />
+          </View>
+
+          <View style={styles.compareSection}>
+            <Text style={styles.compareLabel}>Neanderthal Version</Text>
+            {renderMorphImage(latest.imageUri)}
+          </View>
+
           <Text style={styles.resultMeta}>{latest.createdAt}</Text>
           <Text style={styles.resultTitle}>{latest.title}</Text>
           <Text style={styles.resultSummary}>{latest.summary}</Text>
@@ -188,11 +213,6 @@ export default function App() {
               </View>
             ))}
           </View>
-
-          <View style={styles.captionBox}>
-            <Text style={styles.captionLabel}>Verdict</Text>
-            <Text style={styles.captionText}>{latest.caption}</Text>
-          </View>
         </View>
       )}
     </View>
@@ -202,9 +222,9 @@ export default function App() {
     <View style={styles.content}>
       <Text style={styles.title}>History</Text>
       {history.length === 0 ? (
-        <View style={styles.heroCard}>
-          <Text style={styles.previewTitle}>No selfies analyzed yet</Text>
-          <Text style={styles.previewText}>Your recent Neanderthal looks will show up here.</Text>
+        <View style={styles.infoCard}>
+          <Text style={styles.latestTitle}>No morphs yet</Text>
+          <Text style={styles.latestText}>Your saved before/after prehistoric looks will show up here.</Text>
         </View>
       ) : (
         history.map((item) => (
@@ -213,7 +233,7 @@ export default function App() {
             <View style={styles.historyTextWrap}>
               <Text style={styles.historyTitle}>{item.title}</Text>
               <Text style={styles.historyMeta}>{item.createdAt}</Text>
-              <Text style={styles.historyBody}>{item.caption}</Text>
+              <Text style={styles.historyBody}>{item.summary}</Text>
             </View>
           </View>
         ))
@@ -233,7 +253,7 @@ export default function App() {
       <View style={styles.tabBar}>
         {[
           ['home', 'Home'],
-          ['result', 'Analyze'],
+          ['result', 'Morph'],
           ['history', 'History'],
         ].map(([key, label]) => {
           const active = mode === key;
@@ -270,8 +290,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: palette.text,
-    fontSize: 36,
-    lineHeight: 42,
+    fontSize: 35,
+    lineHeight: 41,
     fontWeight: '800',
   },
   body: {
@@ -279,7 +299,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 25,
   },
-  heroCard: {
+  infoCard: {
     backgroundColor: palette.panel,
     borderRadius: 24,
     padding: 20,
@@ -287,14 +307,14 @@ const styles = StyleSheet.create({
     borderColor: palette.line,
     gap: 8,
   },
-  heroLabel: {
+  infoLabel: {
     color: palette.accentSoft,
     fontSize: 13,
     fontWeight: '800',
     textTransform: 'uppercase',
     letterSpacing: 0.8,
   },
-  heroText: {
+  infoText: {
     color: palette.text,
     fontSize: 16,
     lineHeight: 24,
@@ -341,7 +361,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
-  previewCard: {
+  latestCard: {
     backgroundColor: palette.panelSoft,
     borderRadius: 24,
     padding: 20,
@@ -349,12 +369,12 @@ const styles = StyleSheet.create({
     borderColor: palette.line,
     gap: 8,
   },
-  previewTitle: {
+  latestTitle: {
     color: palette.text,
     fontSize: 24,
     fontWeight: '800',
   },
-  previewText: {
+  latestText: {
     color: palette.muted,
     fontSize: 15,
     lineHeight: 22,
@@ -379,13 +399,108 @@ const styles = StyleSheet.create({
     padding: 18,
     borderWidth: 1,
     borderColor: palette.line,
-    gap: 12,
+    gap: 14,
   },
-  resultImage: {
+  compareSection: {
+    gap: 8,
+  },
+  compareLabel: {
+    color: palette.accentSoft,
+    fontSize: 13,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  compareImage: {
     width: '100%',
-    height: 360,
+    height: 320,
     borderRadius: 20,
     backgroundColor: palette.panelSoft,
+  },
+  morphFrame: {
+    width: '100%',
+    height: 320,
+    borderRadius: 20,
+    overflow: 'hidden',
+    backgroundColor: palette.panelSoft,
+    position: 'relative',
+  },
+  morphImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  colorGradeOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(98, 63, 34, 0.22)',
+  },
+  browRidgeBand: {
+    position: 'absolute',
+    top: 70,
+    left: '15%',
+    right: '15%',
+    height: 34,
+    borderRadius: 20,
+    backgroundColor: 'rgba(48, 33, 19, 0.42)',
+  },
+  cheekShadowLeft: {
+    position: 'absolute',
+    top: 120,
+    left: '7%',
+    width: 90,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: 'rgba(55, 38, 21, 0.23)',
+    transform: [{ rotate: '-10deg' }],
+  },
+  cheekShadowRight: {
+    position: 'absolute',
+    top: 120,
+    right: '7%',
+    width: 90,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: 'rgba(55, 38, 21, 0.23)',
+    transform: [{ rotate: '10deg' }],
+  },
+  noseBridge: {
+    position: 'absolute',
+    top: 92,
+    left: '46%',
+    width: 28,
+    height: 94,
+    borderRadius: 18,
+    backgroundColor: 'rgba(80, 56, 33, 0.25)',
+  },
+  jawShadow: {
+    position: 'absolute',
+    bottom: 36,
+    left: '20%',
+    right: '20%',
+    height: 54,
+    borderRadius: 28,
+    backgroundColor: 'rgba(47, 31, 18, 0.28)',
+  },
+  vignetteTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 88,
+    backgroundColor: 'rgba(0,0,0,0.22)',
+  },
+  vignetteBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 96,
+    backgroundColor: 'rgba(0,0,0,0.26)',
+  },
+  grainTint: {
+    ...StyleSheet.absoluteFill,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 210, 166, 0.12)',
   },
   resultMeta: {
     color: palette.muted,
@@ -419,26 +534,6 @@ const styles = StyleSheet.create({
     color: palette.text,
     fontSize: 14,
     fontWeight: '700',
-  },
-  captionBox: {
-    backgroundColor: '#221910',
-    borderRadius: 18,
-    padding: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: palette.accent,
-  },
-  captionLabel: {
-    color: palette.accentSoft,
-    fontSize: 13,
-    fontWeight: '800',
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-    marginBottom: 6,
-  },
-  captionText: {
-    color: palette.text,
-    fontSize: 15,
-    lineHeight: 22,
   },
   historyCard: {
     flexDirection: 'row',
