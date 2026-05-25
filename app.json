@@ -12,11 +12,14 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.neanderthalfilter.app",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Neanderthal Filter uses the camera so you can take a selfie for analysis.",
+        "NSPhotoLibraryUsageDescription": "Neanderthal Filter lets you choose a selfie from your library for analysis."
       }
     },
     "android": {
       "package": "com.neanderthalfilter.app",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundColor": "#ffffff"
